@@ -12,10 +12,8 @@
 name: CI
 
 # Trigger the workflow on push or pull request
-on:
-  push:
-    branches:
-      - buildx-github-actions
+on: [push, pull_request]
+  
 
 jobs:
   # check EOF newline
