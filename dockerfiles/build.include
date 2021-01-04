@@ -47,7 +47,7 @@ init() {
   BOLD='\033[1m'
   UNDERLINE='\033[4m'
 
-  ORGANIZATION="eclipse"
+  ORGANIZATION="aditijadhav38"
   PREFIX="che"
   TAG="next"
   DRY_RUN=false
@@ -218,8 +218,15 @@ build_image() {
   done
 
   if ! dry_run; then
-    cd "${DIR}" && docker build --cache-from ${IMAGE_NAME} -f ${DIR}/.Dockerfile -t ${IMAGE_NAME} ${BUILD_ARGS} ${DOCKER_BUILD_TARGET} .
-    rm ${DIR}/.Dockerfile
+    if [ "${BUILDX}" == "1" ]; then
+        if [[ -n "${THEIA_DOCKER_IMAGE_VERSION}" ]]; then
+          cd "${DIR}" && docker buildx build --cache-from ${IMAGE_NAME} --platform linux/amd64,linux/s390x --file ${DIR}/.Dockerfile --output "type=image,push=true" --tag quay.io/${IMAGE_NAME_NOTAG}:${THEIA_DOCKER_IMAGE_VERSION} --tag quay.io/${IMAGE_NAME} --progress=plain .
+        else
+          cd "${DIR}" && docker buildx build --cache-from ${IMAGE_NAME} --platform linux/amd64,linux/s390x --file ${DIR}/.Dockerfile --output "type=image,push=true" --tag quay.io/${IMAGE_NAME} --progress=plain .
+        fi
+    else
+        cd "${DIR}" && docker build --cache-from ${IMAGE_NAME} -f ${DIR}/.Dockerfile -t ${IMAGE_NAME} ${BUILD_ARGS} ${DOCKER_BUILD_TARGET} .
+    fi
   fi
   
   if [ $? -eq 0 ]; then
