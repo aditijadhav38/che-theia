@@ -14,8 +14,14 @@ set -o pipefail
 
 parse "$@"
 yarn ${YARN_OPTS}
-
-buildImages
+export BUILDX=0
+if [[ $(check_buildx_support; echo $?) -eq 0 ]]; then
+  export BUILDX=1
+  buildImages
+else
+  buildImages
+  publishImagesOnQuay
+fi
 
 if is_publish_images; then
     publishImages
