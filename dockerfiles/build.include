@@ -231,19 +231,20 @@ build_image() {
   
   if [ $? -eq 0 ]; then
     printf "Build of ${BLUE}${IMAGE_NAME} ${GREEN}[OK]${NC}\n"
-    if [ ! -z "${IMAGE_ALIASES}" ]; then
-      for TMP_IMAGE_NAME in ${IMAGE_ALIASES}
-      do
-        docker tag ${IMAGE_NAME} ${TMP_IMAGE_NAME}:${TAG}
-        if [ $? -eq 0 ]; then
-          printf "  /alias ${BLUE}${TMP_IMAGE_NAME}:${TAG}${NC} ${GREEN}[OK]${NC}\n"
-        else
-          printf "${RED}Failure when building docker image ${IMAGE_NAME}${NC}\n"
-          exit 1
-        fi
-
-      done
-    fi
+    if [ "${BUILDX}" != "1" ]; then
+      if [ ! -z "${IMAGE_ALIASES}" ]; then
+        for TMP_IMAGE_NAME in ${IMAGE_ALIASES}
+        do
+          docker tag ${IMAGE_NAME} ${TMP_IMAGE_NAME}:${TAG}
+          if [ $? -eq 0 ]; then
+            printf "  /alias ${BLUE}${TMP_IMAGE_NAME}:${TAG}${NC} ${GREEN}[OK]${NC}\n"
+          else
+            printf "${RED}Failure when building docker image ${IMAGE_NAME}${NC}\n"
+            exit 1
+          fi
+         done
+       fi
+     fi
     printf "${GREEN}Script run successfully: ${BLUE}${IMAGE_NAME}${NC}\n"
   else
     printf "${RED}Failure when building docker image ${IMAGE_NAME}${NC}\n"
