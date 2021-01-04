@@ -73,6 +73,13 @@ getImages() {
 }
 
 buildImages() {
+
+  if [[ -n "${THEIA_DOCKER_IMAGE_VERSION}" ]]; then
+    export THEIA_DOCKER_IMAGE_VERSION=""
+  else
+    export THEIA_DOCKER_IMAGE_VERSION=${THEIA_DOCKER_IMAGE_VERSION}
+  fi
+  
   IFS=" " read -r -a IMG_LIST <<< "$(getImages)"
   for image_dir in "${IMG_LIST[@]}"
   do
