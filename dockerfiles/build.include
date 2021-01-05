@@ -217,17 +217,17 @@ build_image() {
     fi
   done
   
- if [ "${BUILDX}" == "1" ]; then
-    REGISTRY="quay.io"
-    QUAY_USERNAME=${QUAY_ECLIPSE_CHE_USERNAME}
-    QUAY_PASSWORD=${QUAY_ECLIPSE_CHE_PASSWORD}
-    if [ -n "${QUAY_USERNAME}" ] && [ -n "${QUAY_PASSWORD}" ]; then
-      docker login -u "${QUAY_USERNAME}" -p "${QUAY_PASSWORD}" "${REGISTRY}"
-    else
-      echo "Could not login, missing credentials for pushing to the '${ORGANIZATION}' organization"
-      return
-    fi
-  fi
+ #if [ "${BUILDX}" == "1" ]; then
+ #   REGISTRY="quay.io"
+ #   QUAY_USERNAME=${QUAY_ECLIPSE_CHE_USERNAME}
+ #   QUAY_PASSWORD=${QUAY_ECLIPSE_CHE_PASSWORD}
+ #   if [ -n "${QUAY_USERNAME}" ] && [ -n "${QUAY_PASSWORD}" ]; then
+ #     docker login -u "${QUAY_USERNAME}" -p "${QUAY_PASSWORD}" "${REGISTRY}"
+ #   else
+ #      echo "Could not login, missing credentials for pushing to the '${ORGANIZATION}' organization"
+ #     return
+ #   fi
+ # fi
   
   if ! dry_run; then
     if [ "${BUILDX}" == "1" ]; then
