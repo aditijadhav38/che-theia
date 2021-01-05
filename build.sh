@@ -14,7 +14,7 @@ set -o pipefail
 
 parse "$@"
 yarn ${YARN_OPTS}
-export BUILDX=0
+#export BUILDX=0
 buildImages
 
 if is_publish_images; then
