@@ -55,7 +55,7 @@ jobs:
         
     - name: build
       run: yarn
-  docker-build:
+  image-build:
     strategy:
       matrix:
         dist: [ 'alpine', 'ubi8' ]
